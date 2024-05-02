@@ -73,7 +73,7 @@ const userReducer = (userState: TUserState, action: TAction): TUserState => {
 export const useCurrentUserContext = () => {
   const context = useContext(CurrentUserContext)
 
-  // Custom hooks can only be used inside the providers.
+  // Custom hooks can only be used inside the provider.
   if (!context) {
     throw new Error("useCurrentUserContext must be used inside CurrentUserProvider")
   }
