@@ -1,3 +1,5 @@
+"use client"
+
 import React, { createContext, useContext, useReducer } from "react"
 
 enum Role {
@@ -11,7 +13,7 @@ type TUser = {
   email: string
   image?: string
   role: Role
-  position: string
+  position?: string
 }
 
 type TUserState = TUser | null

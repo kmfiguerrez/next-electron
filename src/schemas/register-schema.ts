@@ -1,10 +1,11 @@
 import { z } from "zod"
 
 const registerSchema = z.object({
+  employeeId: z.string({ required_error: "Employee ID is required" })
+    .min(1, "Employee ID is required"),
   email: z.string({ required_error: "Email is required" })
     .min(1, "Email is required")
     .email("Invalid email"),
-  name: z.optional(z.string().max(32, "Password must be less than 50 characters")),
   password: z.string({ required_error: "Password is required" })
     .min(1, "Password is required")
     .min(8, "Password must be more than 8 characters")

@@ -27,13 +27,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { useCurrentUserContext } from "../providers/current-user/user-context"
 
 
 
 const LoginForm = () => {
   const [error, setError] = useState<string>()
   const [success, setSuccess] = useState<string>()  
+  
   const router = useRouter()
+
+  const { dispatch } = useCurrentUserContext()
+
   
   const apiEndpoint = 'http://localhost:8080/api/auth/login'
 
@@ -70,12 +75,14 @@ const LoginForm = () => {
       }
       
       const responseData = await response.json()
-
       console.log(responseData)
+
+      dispatch({type: "signIn", payload: { user: responseData }})
+
       router.push("/dashboard")
 
       // It will be recognize at runtime.
-      console.log(window.electronAPI.ping())
+      // console.log(window.electronAPI.ping())
     } 
     catch (error: unknown) {
       console.log(error)

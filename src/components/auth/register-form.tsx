@@ -39,8 +39,8 @@ const RegisterForm = () => {
   const form = useForm<TregisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      employeeId: "",
       email: "",
-      name: "",
       password: ""
     },
   })
@@ -78,6 +78,11 @@ const RegisterForm = () => {
       console.log(error)
       const errorMessage = getErrorMessage(error)
       // console.log("Err message: ", getErrorMessage)
+      if (errorMessage.includes("employee ID")) {
+        form.setError("employeeId", {message: getErrorMessage(error)})
+        return
+      }
+      
       setError(getErrorMessage(error))
     }
   }  
@@ -100,6 +105,20 @@ const RegisterForm = () => {
           
           <FormField
             control={form.control}
+            name="employeeId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Employee ID</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your Employee ID" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />    
+
+          <FormField
+            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
@@ -112,19 +131,7 @@ const RegisterForm = () => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />          
+      
 
           <FormField
             control={form.control}

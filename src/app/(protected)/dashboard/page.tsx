@@ -1,8 +1,15 @@
-import React from 'react'
+"use client"
+
+import { useCurrentUserContext } from "@/components/providers/current-user/user-context"
 
 const DashboardPage = () => {
+  const { state } = useCurrentUserContext()
+  const currentUser = state
+
   return (
-    <div>DashboardPage</div>
+    <div>
+      <p>Current user: {currentUser?.id}</p>
+    </div>
   )
 }
 
