@@ -9,10 +9,10 @@ type TDashboardLayoutProps = {
 const DashboardLayout: React.FC<TDashboardLayoutProps> = ({ children }) => {
   return (
     <div className='flex'>
-      <div className='flex p-5'>
+      <div className='p-5 flex-1 bg-zinc-900 min-h-screen'>
         <Sidebar />
       </div>
-      <div className='flex p-5'>
+      <div className='p-5'>
         <Navbar />
         {children}
       </div>

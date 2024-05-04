@@ -19,7 +19,7 @@ const MenuLink: React.FC<TMenuLinkProps> = ({ item }) => {
     // >
       <Link 
         href={item.path}
-        className='p-5 flex space-x-2 items-center'
+        className='p-5 flex space-x-2 items-center hover:bg-zinc-700 rounded-md'
       >
         {item.icon}
 

@@ -21,6 +21,7 @@ const Sidebar = () => {
     <div className='sticky'>
       <div>
         {/* Avatar here */}
+        <img src="" alt="picture" />
       </div>
 
       <ul className='space-y-3'>
