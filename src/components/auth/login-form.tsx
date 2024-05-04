@@ -80,7 +80,7 @@ const LoginForm = () => {
 
       dispatch({type: "signIn", payload: { user: responseData }})
 
-      // router.push("/dashboard")
+      router.push("/dashboard")
 
       // It will be recognize at runtime.
       // console.log(window.electronAPI.ping())
