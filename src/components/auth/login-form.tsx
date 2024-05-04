@@ -17,6 +17,8 @@ import { getErrorMessage } from "@/lib/error-message"
 
 import loginSchema, { type TloginSchema } from "@/schemas/login-schema"
 
+import { useCurrentUserContext } from "../providers/current-user/user-context"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -27,7 +29,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { useCurrentUserContext } from "../providers/current-user/user-context"
 
 
 
@@ -79,7 +80,7 @@ const LoginForm = () => {
 
       dispatch({type: "signIn", payload: { user: responseData }})
 
-      router.push("/dashboard")
+      // router.push("/dashboard")
 
       // It will be recognize at runtime.
       // console.log(window.electronAPI.ping())

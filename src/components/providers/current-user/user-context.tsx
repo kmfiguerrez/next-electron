@@ -13,7 +13,8 @@ type TUser = {
   email: string
   image?: string
   role: Role
-  position?: string
+  designation?: string
+  department: string
 }
 
 type TUserState = TUser | null
