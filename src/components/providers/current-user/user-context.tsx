@@ -9,7 +9,7 @@ enum Role {
 
 type TUser = {
   id: string
-  name?: string
+  fullName?: string
   email: string
   image?: string
   role: Role

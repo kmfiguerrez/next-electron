@@ -1,7 +1,10 @@
-// import { menuItems } from '@/lib/constants'
+'use client'
+
 import React from 'react'
 
 import MenuLink from './menu-link'
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { 
   BarChart4,
@@ -10,21 +13,34 @@ import {
   CircleUserRound, 
   FileQuestion, 
   LayoutDashboard, 
+  LogOut, 
   Settings, 
   ShoppingBag,
   Users
 } from 'lucide-react'
+import { useCurrentUserContext } from '@/components/providers/current-user/user-context'
+import { Button } from '@/components/ui/button'
+
 
 
 const Sidebar = () => {
+  const { state: currentUser } = useCurrentUserContext()
+
   return (
     <div className='sticky'>
-      <div>
-        {/* Avatar here */}
-        <img src="" alt="picture" />
+      <div className='flex space-x-5 mb-8 items-center'>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+
+        <div className='flex flex-col'>
+          <span className='capitalize font-semibold'>{currentUser?.fullName}</span>
+          <span className='text-sm text-zinc-400'>{currentUser?.designation}</span>
+        </div>
       </div>
 
-      <ul className='space-y-3'>
+      <ul className='space-y-3 mb-4'>
         {menuItems.map(category => (
             <li key={category.title}>
               <span className='text-sm accent-white'>
@@ -41,6 +57,14 @@ const Sidebar = () => {
           ))
         }
       </ul>
+
+      <Button
+        variant={"ghost"}
+        className='dark:hover:bg-zinc-600'
+      >
+        <LogOut className="mr-2 h-4 w-4" />
+        Logout
+      </Button>
     </div>
   )
 }
@@ -57,8 +81,8 @@ const menuItems = [
         icon: <LayoutDashboard height={20} width={20} />,
       },
       {
-        title: "Users",
-        path: "/dashboard/users",
+        title: "Employees",
+        path: "/dashboard/employees",
         icon: <CircleUserRound height={20} width={20} />,
       },
       {
