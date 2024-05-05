@@ -1,6 +1,7 @@
+import React from 'react'
+
 import Navbar from '@/components/dashboard/navbar/navbar'
 import Sidebar from '@/components/dashboard/sidebar/sidebar'
-import React from 'react'
 
 type TDashboardLayoutProps = {
   children: React.ReactNode

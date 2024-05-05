@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const serve = require("electron-serve");
 const path = require("path");
 
@@ -6,8 +6,10 @@ const appServe = app.isPackaged ? serve({
   directory: path.join(__dirname, "../out")
 }) : null;
 
+let mainWindow
+
 const createWindow = () => {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -16,21 +18,34 @@ const createWindow = () => {
   });
 
   if (app.isPackaged) {
-    appServe(win).then(() => {
-      win.loadURL("app://-");
+    appServe(mainWindow).then(() => {
+      mainWindow.loadURL("app://-");
     });
-  } else {
-    win.loadURL("http://localhost:3000");
-    win.webContents.openDevTools();
-    win.webContents.on("did-fail-load", (e, code, desc) => {
-      win.webContents.reloadIgnoringCache();
+  } 
+  else {
+    mainWindow.loadURL("http://localhost:3000");
+    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.on("did-fail-load", (e, code, desc) => {
+      mainWindow.webContents.reloadIgnoringCache();
     });
+
+    // const url = mainWindow.webContents.getURL()
+    console.log(mainWindow.webContents)
   }
 }
 
-app.on("ready", () => {
-    createWindow();
-});
+app.whenReady().then(() => {
+  ipcMain.handle("getURL", () => mainWindow.webContents.getURL())
+
+  createWindow()
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
+  })
+
+})
 
 app.on("window-all-closed", () => {
     if(process.platform !== "darwin"){

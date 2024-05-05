@@ -2,9 +2,17 @@
 
 import React from 'react'
 
+import { useRouter } from 'next/navigation'
+
+import { useCurrentUserContext } from '@/components/providers/current-user/user-context'
+
 import MenuLink from './menu-link'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+import { Separator } from "@/components/ui/separator"
+
+import { Button } from '@/components/ui/button'
 
 import { 
   BarChart4,
@@ -18,17 +26,17 @@ import {
   ShoppingBag,
   Users
 } from 'lucide-react'
-import { useCurrentUserContext } from '@/components/providers/current-user/user-context'
-import { Button } from '@/components/ui/button'
 
 
 
 const Sidebar = () => {
-  const { state: currentUser } = useCurrentUserContext()
+  const router = useRouter()
+
+  const { state: currentUser, dispatch } = useCurrentUserContext()
 
   return (
     <div className='sticky'>
-      <div className='flex space-x-5 mb-8 items-center'>
+      <div className='flex space-x-5 items-center'>
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
@@ -39,6 +47,8 @@ const Sidebar = () => {
           <span className='text-sm text-zinc-400'>{currentUser?.designation}</span>
         </div>
       </div>
+
+      <Separator className='mt-4 mb-8' />
 
       <ul className='space-y-3 mb-4'>
         {menuItems.map(category => (
@@ -58,11 +68,20 @@ const Sidebar = () => {
         }
       </ul>
 
+      <Separator className='mt-4 mb-4' />
+
       <Button
         variant={"ghost"}
-        className='dark:hover:bg-zinc-600'
+        className='dark:hover:bg-zinc-600 text-lg'
+        onClick={() => {
+          dispatch({
+            type: "signOut"
+          })
+
+          router.push("/login")
+        }}
       >
-        <LogOut className="mr-2 h-4 w-4" />
+        <LogOut className="mr-2" />
         Logout
       </Button>
     </div>

@@ -83,7 +83,7 @@ const LoginForm = () => {
       router.push("/dashboard")
 
       // It will be recognize at runtime.
-      // console.log(window.electronAPI.ping())
+      // console.log(window.electronAPI.getURL())
     } 
     catch (error: unknown) {
       console.log(error)

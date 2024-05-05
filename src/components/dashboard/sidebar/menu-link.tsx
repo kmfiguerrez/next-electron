@@ -1,8 +1,9 @@
+"use client"
+
 import React from 'react'
 
 import Link from 'next/link'
-
-import { Button } from '@/components/ui/button'
+import { usePathname } from 'next/navigation'
 
 
 type TMenuLinkProps = {
@@ -11,24 +12,22 @@ type TMenuLinkProps = {
 
 
 const MenuLink: React.FC<TMenuLinkProps> = ({ item }) => {
+
+  const pathname = usePathname()
+
+  console.log(pathname)
   return (
-    // <Button 
-    //   variant={'link'} 
-    //   className=''
-    //   asChild
-    // >
-      <Link 
-        href={item.path}
-        className='p-5 flex space-x-2 items-center hover:bg-zinc-700 rounded-md'
-      >
-        {item.icon}
+    <Link 
+      href={item.path}
+      className={`p-5 flex space-x-2 items-center hover:bg-zinc-700 rounded-md ${pathname === item.path && 'bg-zinc-700'}`}
+    >
+      {item.icon}
 
-        <span>
-          {item.title}
-        </span>
+      <span>
+        {item.title}
+      </span>
 
-      </Link>
-    // </Button>
+    </Link>
   )
 }
 
