@@ -9,14 +9,7 @@ const EmployeesPage = () => {
   return (
     <div>
       EmployeesPage
-      <Button
-        onClick={async () => {
-          const currentURL = await window.electronAPI.getURL()
-          console.log(currentURL)
-        }}
-      >
-        Get URL
-      </Button>
+
     </div>
     
   )

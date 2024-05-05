@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const serve = require("electron-serve");
 const path = require("path");
 
+
 const appServe = app.isPackaged ? serve({
   directory: path.join(__dirname, "../out")
 }) : null;
@@ -18,7 +19,8 @@ const createWindow = () => {
   });
 
   if (app.isPackaged) {
-    appServe(mainWindow).then(() => {
+    appServe(mainWindow)
+    .then(() => {
       mainWindow.loadURL("app://-");
     });
   } 
@@ -28,9 +30,6 @@ const createWindow = () => {
     mainWindow.webContents.on("did-fail-load", (e, code, desc) => {
       mainWindow.webContents.reloadIgnoringCache();
     });
-
-    // const url = mainWindow.webContents.getURL()
-    console.log(mainWindow.webContents)
   }
 }
 
