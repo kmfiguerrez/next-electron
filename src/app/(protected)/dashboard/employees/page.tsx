@@ -1,17 +1,10 @@
-"use client"
-
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import { columns } from "@/components/dashboard/employees/columns"
+import { employees } from "@/components/dashboard/employees/data"
+import EmployeeDataTable from "@/components/dashboard/employees/data-table"
 
 const EmployeesPage = () => {
-
-
   return (
-    <div>
-      EmployeesPage
-
-    </div>
-    
+    <EmployeeDataTable dataTable={employees} columns={columns} />
   )
 }
 
