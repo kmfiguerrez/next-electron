@@ -6,7 +6,7 @@ export default function Home() {
     <main className="flex flex-col items-center space-y-4">
       <h1>Welcome to Next-Electron</h1>
       <Button asChild className="">
-        <Link href={`/dashboard/employees`}>Login</Link>
+        <Link href={`/login`}>Login</Link>
       </Button>
     </main>
   );

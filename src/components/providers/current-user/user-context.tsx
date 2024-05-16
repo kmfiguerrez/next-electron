@@ -9,12 +9,13 @@ enum Role {
 
 type TUser = {
   id: string
-  fullName?: string
+  name?: string
   email: string
   image?: string
   role: Role
   designation?: string
   department: string
+  accessToken: string
 }
 
 type TUserState = TUser | null

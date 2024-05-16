@@ -27,14 +27,20 @@ const createWindow = () => {
   else {
     mainWindow.loadURL("http://localhost:3000");
     mainWindow.webContents.openDevTools();
-    mainWindow.webContents.on("did-fail-load", (e, code, desc) => {
-      mainWindow.webContents.reloadIgnoringCache();
-    });
+    // mainWindow.webContents.on("did-fail-load", (e, code, desc) => {
+    //   mainWindow.webContents.reloadIgnoringCache();
+    // });
   }
 }
 
 app.whenReady().then(() => {
   ipcMain.handle("getURL", () => mainWindow.webContents.getURL())
+  ipcMain.handle("getCookie", async () => {
+    // await mainWindow.webContents.session.clearStorageData()
+
+    return mainWindow.webContents.session.cookies.get({})}
+  )
+
 
   createWindow()
 

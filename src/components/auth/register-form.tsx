@@ -32,7 +32,7 @@ const RegisterForm = () => {
   const [success, setSuccess] = useState<string>()  
  
   
-  const apiEndpoint = 'http://localhost:8080/api/auth/register'
+  const apiEndpoint = 'http://localhost:8080/auth/register'
 
 
   // 1. Define your form.

@@ -41,7 +41,7 @@ const LoginForm = () => {
   const { dispatch } = useCurrentUserContext()
 
   
-  const apiEndpoint = 'http://localhost:8080/api/auth/login'
+  const apiEndpoint = 'http://localhost:8080/auth/login'
 
   // 1. Define your form.
   const form = useForm<TloginSchema>({
@@ -72,6 +72,7 @@ const LoginForm = () => {
 
       if (!response.ok) {
         const error = await response.json()
+        console.log(error)
         throw new Error(error.message)
       }
       
@@ -89,7 +90,7 @@ const LoginForm = () => {
       console.log(error)
       const errorMessage = getErrorMessage(error)
       // console.log("Err message: ", getErrorMessage)
-      setError(getErrorMessage(error))
+      setError(errorMessage)
     }
   }  
 
@@ -141,6 +142,17 @@ const LoginForm = () => {
           >
             {form.formState.isSubmitting ? "loading" : "Login"}
           </Button>
+
+          {/* <Button
+            type="button"
+            onClick={async () => {
+              const cookie = await window.electronAPI.getCookie()
+              console.log(cookie)
+            }}
+          >
+            Get cookie
+          </Button> */}
+
         </form>
       </Form>
     </CardWrapper>

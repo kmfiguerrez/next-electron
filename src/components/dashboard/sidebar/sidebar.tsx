@@ -43,7 +43,7 @@ const Sidebar = () => {
         </Avatar>
 
         <div className='flex flex-col'>
-          <span className='capitalize font-semibold'>{currentUser?.fullName}</span>
+          <span className='capitalize font-semibold'>{currentUser?.name}</span>
           <span className='text-sm text-zinc-400'>{currentUser?.designation}</span>
         </div>
       </div>

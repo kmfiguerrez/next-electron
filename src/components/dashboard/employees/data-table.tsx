@@ -16,6 +16,9 @@ import {
   Table as TReactTable,  
 } from "@tanstack/react-table"
 
+import { downloadToExcel } from '@/lib/xlsx'
+import { TEmployee } from './data'
+
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -32,6 +35,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 
 
 interface DataTableProps<TData, TValue> {
@@ -78,29 +82,39 @@ function EmployeeDataTable<TData, TValue>({
   return (
     <div>
       {/* Filtering */}
-      <div className='flex items-center py-4'>
-        <Input 
+      <div className='flex items-center py-4 justify-between'>
+        {/* <Input 
           placeholder='Filter by gender'
           value={table.getColumn("gender")?.getFilterValue() as string || ""}
           onChange={e => {
             const row = table.getColumn("gender")?.setFilterValue(e.target.value)
-            console.log(table.getFilteredRowModel())
+            console.log(table.getFilteredRowModel().rows.map(row => console.log(row.original)))
           }}
           className='max-w-sm'
-        />
+        /> */}
 
         <Input 
           placeholder='Filter by email'
           value={table.getColumn("email")?.getFilterValue() as string || ""}
           onChange={e => {
             const row = table.getColumn("email")?.setFilterValue(e.target.value)
-            console.log(table.getFilteredRowModel())
-            console.log(table.getRowModel())
+            // console.log(table.getFilteredRowModel())
+            console.log(table.getFilteredRowModel().rows.map(row => console.log(row.original)))
           }}
           className='max-w-sm'
         />        
+        <div>
+          <Button
+            onClick={() => {
+              const employees = table.getFilteredRowModel().rows.map(row => row.original)
+              downloadToExcel(employees as Array<TEmployee>)
+            }}
+          >
+            Export
+          </Button>
 
-        <ColumnsVisibility table={table} />
+          <ColumnsVisibility table={table} />
+        </div>
       </div>
 
       {/* Table */}
