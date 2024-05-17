@@ -1,29 +1,15 @@
 "use client"
 
-import { columns } from "@/components/dashboard/employees/columns"
-import { employees } from "@/components/dashboard/employees/data"
-import EmployeeDataTable from "@/components/dashboard/employees/data-table"
-import { getErrorMessage } from "@/lib/error-message"
 import { useEffect, useState } from "react"
 
+import { columns } from "@/components/dashboard/employees/columns"
+import EmployeeDataTable from "@/components/dashboard/employees/data-table"
+import { TEmployee } from "@/components/dashboard/employees/type"
 
-enum Gender {
-  MALE = "Male",
-  FEMALE = "Female"
-}
+import { getErrorMessage } from "@/lib/error-message"
 
-export type TEmployee = {
-  id: string
-  birthDate: Date
-  firstName: string
-  lastName: string
-  gender: Gender
-  designation: string
-  department: string
-  hireDate: Date
-  active: boolean
-  email: string
-}
+
+
 
 const EmployeesPage = () => {
   const [employees, setEmployees] = useState<Array<TEmployee>>([])
@@ -45,9 +31,8 @@ const EmployeesPage = () => {
         }
 
         const responseData = await response.json()
-        console.log(responseData)
+        console.log("Response data", responseData)
         setEmployees(responseData)
-        console.log(employees)
       } 
       catch (error: unknown) {
         const errorMessage = getErrorMessage(error)
@@ -59,7 +44,7 @@ const EmployeesPage = () => {
   }, [])
 
   return (
-    <EmployeeDataTable dataTable={employees} columns={columns} />
+    <EmployeeDataTable data={employees} columns={columns} />
 
   )
 }

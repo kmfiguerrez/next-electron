@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
  
 import {
   ColumnDef,
@@ -17,7 +17,9 @@ import {
 } from "@tanstack/react-table"
 
 import { downloadToExcel } from '@/lib/xlsx'
-import { TEmployee } from './data'
+
+import { TEmployee } from './type'
+import AddEmployee from './forms/add-employee'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -40,14 +42,14 @@ import {
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  dataTable: TData[]
+  data: TData[]
 }
 
 function EmployeeDataTable<TData, TValue>({
   columns,
-  dataTable
+  data
 }: DataTableProps<TData, TValue>) {
-  const [data, setData] = useState(dataTable)
+  // const [data, setData] = useState(dataTable)
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -102,8 +104,9 @@ function EmployeeDataTable<TData, TValue>({
             console.log(table.getFilteredRowModel().rows.map(row => console.log(row.original)))
           }}
           className='max-w-sm'
-        />        
-        <div>
+        />
+
+        <div className='flex items-center'>
           <Button
             onClick={() => {
               const employees = table.getFilteredRowModel().rows.map(row => row.original)
@@ -112,6 +115,8 @@ function EmployeeDataTable<TData, TValue>({
           >
             Export
           </Button>
+
+          <AddEmployee />
 
           <ColumnsVisibility table={table} />
         </div>

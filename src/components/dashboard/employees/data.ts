@@ -3,7 +3,7 @@ enum Gender {
   FEMALE = "Female"
 }
 
-export type TEmployee = {
+type TEmployee = {
   id: string
   birthDate: Date
   firstName: string

@@ -2,7 +2,7 @@
  
 import type { Column, ColumnDef } from "@tanstack/react-table"
 
-import type { TEmployee } from "./data"
+import { TEmployee } from "./type"
 
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 
@@ -71,6 +71,10 @@ export const columns: ColumnDef<TEmployee>[] = [
   {
     accessorKey: "active",
     header: "Active",
+    cell: props => {
+      const cellValue = props.getValue()
+      return cellValue ? "Yes" : "No"
+    }
   },
   {
     accessorKey: "birthDate",
