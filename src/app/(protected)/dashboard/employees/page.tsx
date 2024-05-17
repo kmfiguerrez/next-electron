@@ -1,20 +1,22 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import { columns } from "@/components/dashboard/employees/columns"
 import EmployeeDataTable from "@/components/dashboard/employees/data-table"
-import { TEmployee } from "@/components/dashboard/employees/type"
 
 import { getErrorMessage } from "@/lib/error-message"
+
+import { useEmployeesContext } from "@/components/providers/employees-context"
+
 
 
 
 
 const EmployeesPage = () => {
-  const [employees, setEmployees] = useState<Array<TEmployee>>([])
+  const {employees, dispatch} = useEmployeesContext()
 
-  console.log(employees)
+  // console.log(employees)
 
   useEffect(() => {
     const getEmployees = async () => {
@@ -32,7 +34,12 @@ const EmployeesPage = () => {
 
         const responseData = await response.json()
         console.log("Response data", responseData)
-        setEmployees(responseData)
+
+        // Sync employees local copy.
+        dispatch({
+          type: "set",
+          payload: responseData
+        })
       } 
       catch (error: unknown) {
         const errorMessage = getErrorMessage(error)
@@ -44,8 +51,8 @@ const EmployeesPage = () => {
   }, [])
 
   return (
-    <EmployeeDataTable data={employees} columns={columns} />
 
+    <EmployeeDataTable data={employees} columns={columns} />
   )
 }
 

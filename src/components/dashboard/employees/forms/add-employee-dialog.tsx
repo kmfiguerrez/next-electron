@@ -2,9 +2,8 @@ import React from 'react'
 
 import { PlusCircle } from 'lucide-react'
 
-import EmployeeForm from './employee-form'
+import EmployeeForm from './add-employee-form'
 
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,7 +16,7 @@ import {
 
 
 
-const AddEmployee = () => {
+const AddEmployeeDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,20 +26,17 @@ const AddEmployee = () => {
       </DialogTrigger>
 
       <DialogContent className='h-[500px] overflow-y-scroll'>
-        {/* <ScrollArea className='h-[500px] p-4'> */}
-          <DialogHeader>
-            <DialogTitle>Add Employee</DialogTitle>
-            <DialogDescription>
-              This action will add employee to the database.
-            </DialogDescription>
-          </DialogHeader>
-          {/* Form */}
-          <EmployeeForm />
-        {/* </ScrollArea> */}
+        <DialogHeader>
+          <DialogTitle>Add Employee</DialogTitle>
+          <DialogDescription>
+            This action will add employee to the database.
+          </DialogDescription>
+        </DialogHeader>
+        {/* Form */}
+        <EmployeeForm />
       </DialogContent>
-
     </Dialog>
   )
 }
 
-export default AddEmployee
+export default AddEmployeeDialog

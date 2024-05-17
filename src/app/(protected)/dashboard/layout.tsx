@@ -1,7 +1,12 @@
+"use client"
+
+
 import React from 'react'
 
 import Navbar from '@/components/dashboard/navbar/navbar'
 import Sidebar from '@/components/dashboard/sidebar/sidebar'
+
+import EmployeesProvider from "@/components/providers/employees-context"
 
 type TDashboardLayoutProps = {
   children: React.ReactNode
@@ -15,7 +20,9 @@ const DashboardLayout: React.FC<TDashboardLayoutProps> = ({ children }) => {
       </div>
       <div className='p-5'>
         <Navbar />
-        {children}
+        <EmployeesProvider>
+          {children}
+        </EmployeesProvider>        
       </div>
     </div>
   )

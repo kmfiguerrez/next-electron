@@ -19,7 +19,7 @@ import {
 import { downloadToExcel } from '@/lib/xlsx'
 
 import { TEmployee } from './type'
-import AddEmployee from './forms/add-employee'
+import AddEmployeeDialog from './forms/add-employee-dialog'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -116,7 +116,7 @@ function EmployeeDataTable<TData, TValue>({
             Export
           </Button>
 
-          <AddEmployee />
+          <AddEmployeeDialog />
 
           <ColumnsVisibility table={table} />
         </div>
@@ -211,20 +211,19 @@ function ColumnsVisibility<TData> ({table}: TColumnVisibilityProps<TData>) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         {table.getAllColumns().filter(column => column.getCanHide()).map(column => {
-          return (
-            <DropdownMenuCheckboxItem 
-              key={column.id}
-              className='capitalize'
-              checked={column.getIsVisible()}
-              onCheckedChange={value => {
-                column.toggleVisibility(!!value)
-              }}
-            >
-              {column.id === "id" ? "employee id": column.id}
-            </DropdownMenuCheckboxItem>
-          )
-        })
-
+            return (
+              <DropdownMenuCheckboxItem 
+                key={column.id}
+                className='capitalize'
+                checked={column.getIsVisible()}
+                onCheckedChange={value => {
+                  column.toggleVisibility(!!value)
+                }}
+              >
+                {column.id === "id" ? "employee id": column.id}
+              </DropdownMenuCheckboxItem>
+            )
+          })
         }
       </DropdownMenuContent>
     </DropdownMenu>

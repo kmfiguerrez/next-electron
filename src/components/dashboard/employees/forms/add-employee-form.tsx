@@ -7,10 +7,7 @@ import employeeSchema, {Active, type TEmployeeSchema } from '@/schemas/employee-
 
 import { Gender } from '../type'
 
-import { CalendarIcon } from 'lucide-react'
-import { format } from "date-fns"
-
-import { cn } from '@/lib/utils'
+import { getErrorMessage } from '@/lib/error-message'
 
 import FormSucess from '@/components/auth/form-success'
 import FormError from '@/components/auth/form-error'
@@ -32,21 +29,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { getErrorMessage } from '@/lib/error-message'
+import { useEmployeesContext } from '@/components/providers/employees-context'
 
 
 
 
 
-const EmployeeForm = () => {
+
+const AddEmployeeForm = () => {
   const [error, setError] = useState<string>()
-  const [success, setSuccess] = useState<string>()   
+  const [success, setSuccess] = useState<string>()
+  
+  const { dispatch } = useEmployeesContext()
 
   // 1. Define your form.
   const form = useForm<TEmployeeSchema>({
@@ -73,14 +67,11 @@ const EmployeeForm = () => {
 
     /*
       The reason why active prop is enum in the employee schema is that
-      it is hard to work with boolean in forms.    
+      it is hard to work with boolean in forms.
+      But before sending the payload, we turn the active prop value to
+      boolean.    
     */
     console.log(values)
-    // console.log("new Date", values.hireDate.getDate())
-    // console.log("new Month", values.hireDate.getMonth())
-    // console.log("new Year", values.hireDate.getFullYear())
-
-
 
     const apiEndpoint: string = "http://localhost:8080/employees"
     const payload = {
@@ -101,10 +92,7 @@ const EmployeeForm = () => {
       if (!response.ok) {
         const error = await response.json()
         console.log(error)
-        console.log(error.error)
-        // if (error instanceof Error) {
-        //   error.name
-        // }
+        // console.log(error.error)
         throw new Error(error.message)
       }
       
@@ -112,8 +100,18 @@ const EmployeeForm = () => {
       // console.log(responseData)
       setSuccess("Employee added")
 
+      // Sync the employees local copy.
+      dispatch({
+        type: "added", 
+        payload: {
+          ...payload,
+          hireDate: new Date(payload.hireDate),
+          birthDate: new Date(payload.birthDate)
+        }
+      })
+
       // Reset form.
-      // form.reset()
+      form.reset()
       
     } 
     catch (error: unknown) {
@@ -128,8 +126,6 @@ const EmployeeForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
-
 
         <FormField
           control={form.control}
@@ -245,48 +241,6 @@ const EmployeeForm = () => {
           )}
         />
 
-        {/* <FormField
-          control={form.control}
-          name="birthDate"
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />   */}
-
         <FormField
           control={form.control}
           name="designation"
@@ -294,7 +248,7 @@ const EmployeeForm = () => {
             <FormItem>
               <FormLabel>Designation</FormLabel>
               <FormControl>
-                <Input placeholder="Designation" {...field} />
+                <Input placeholder="Position" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -330,48 +284,6 @@ const EmployeeForm = () => {
           )}
         />
 
-        {/* <FormField
-          control={form.control}
-          name="hireDate"
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Hire date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
         {/* Runtime messages. */}
         <FormSucess message={success} />
         <FormError message={error} />
@@ -383,4 +295,4 @@ const EmployeeForm = () => {
   )
 }
 
-export default EmployeeForm
+export default AddEmployeeForm

@@ -4,7 +4,7 @@ export enum Gender {
 }
 
 export type TEmployee = {
-  id: string
+  employeeId: string
   birthDate: Date
   firstName: string
   lastName: string
