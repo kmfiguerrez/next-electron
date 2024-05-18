@@ -8,6 +8,7 @@ import EmployeeDataTable from "@/components/dashboard/employees/data-table"
 import { getErrorMessage } from "@/lib/error-message"
 
 import { useEmployeesContext } from "@/components/providers/employees-context"
+import { useCurrentUserContext } from "@/components/providers/current-user/user-context"
 
 
 
@@ -16,14 +17,18 @@ import { useEmployeesContext } from "@/components/providers/employees-context"
 const EmployeesPage = () => {
   const {employees, dispatch} = useEmployeesContext()
 
-  // console.log(employees)
+  const { user } = useCurrentUserContext()
+  
 
   useEffect(() => {
     const getEmployees = async () => {
       
       try {
         const response = await fetch("http://localhost:8080/employees", {
-          method: "GET"
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${user?.accessToken}` 
+          }
         })
 
         if (!response.ok) {
@@ -33,7 +38,7 @@ const EmployeesPage = () => {
         }
 
         const responseData = await response.json()
-        console.log("Response data", responseData)
+        // console.log("Response data", responseData)
 
         // Sync employees local copy.
         dispatch({

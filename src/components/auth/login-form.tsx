@@ -129,7 +129,7 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input type="password" placeholder="shadcn" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

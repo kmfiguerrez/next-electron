@@ -32,7 +32,7 @@ import {
 const Sidebar = () => {
   const router = useRouter()
 
-  const { state: currentUser, dispatch } = useCurrentUserContext()
+  const { user: currentUser, dispatch } = useCurrentUserContext()
 
   return (
     <div className='sticky'>

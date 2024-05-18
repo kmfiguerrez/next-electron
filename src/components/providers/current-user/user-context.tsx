@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext, useReducer } from "react"
 
-enum Role {
-  ADMIN,
-  USER
+export enum Role {
+  ADMIN = "ADMIN",
+  USER = "USER"
 }
 
 type TUser = {
@@ -21,7 +21,7 @@ type TUser = {
 type TUserState = TUser | null
 
 type TCurrentUserContext = {
-  state: TUserState
+  user: TUserState
   dispatch: React.Dispatch<TAction>
 }
 
@@ -37,7 +37,7 @@ const CurrentUserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userState, dispatch] = useReducer(userReducer, initialState);
 
   return (
-    <CurrentUserContext.Provider value={{state: userState, dispatch: dispatch}}>
+    <CurrentUserContext.Provider value={{user: userState, dispatch: dispatch}}>
         {children}
     </CurrentUserContext.Provider>
   )
