@@ -1,7 +1,5 @@
 "use client"
  
-import { useState } from "react"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
@@ -42,14 +40,12 @@ const RegisterForm = () => {
  
   // 2. Define a submit handler.
   async function onSubmit(values: TregisterSchema) {
-
     await signup(values)
     form.reset()
-
   }  
 
 
-  
+
   return (
     <CardWrapper 
       title="Register" 

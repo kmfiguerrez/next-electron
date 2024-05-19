@@ -1,3 +1,4 @@
+import { REGISTER_ENDPOINT } from "@/lib/api-endpoints"
 import { getErrorMessage } from "@/lib/error-message"
 import { useState } from "react"
 
@@ -10,9 +11,6 @@ type TRegisterPayload = {
 export const useSignup = () => {
   const [success, setSuccess] = useState<string>()
   const [error, setError] = useState<string>()
-
-  // const registerEndpoint = `${process.env.API_SERVER}${process.env.REGISTER_ENDPOINT}`
-  const registerEndpoint = `http://localhost:8080/auth/register`
 
 
   const signup = async (registerPayload: TRegisterPayload) => {
@@ -29,7 +27,7 @@ export const useSignup = () => {
     }    
 
     try {
-      const response = await fetch(registerEndpoint, requestOptions)
+      const response = await fetch(REGISTER_ENDPOINT, requestOptions)
 
       if (!response.ok) {
         const error = await response.json()
@@ -38,7 +36,7 @@ export const useSignup = () => {
       }
 
       const data = await response.json()
-      setSuccess("User account registered")
+      setSuccess("Account registered")
 
     } 
     catch (error: unknown) {

@@ -1,23 +1,18 @@
 "use client"
 
-
 import { useState } from "react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
-import { useRouter } from 'next/navigation'
 
 import FormSucess from "@/components/auth/form-success"
 import FormError from "@/components/auth/form-error"
 
 import CardWrapper from "@/components/auth/card-wrapper"
 
-import { getErrorMessage } from "@/lib/error-message"
-
 import loginSchema, { type TloginSchema } from "@/schemas/login-schema"
 
-import { useCurrentUserContext } from "../providers/current-user/user-context"
+import { useLogin } from "../hooks/useLogin"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,12 +28,12 @@ import {
 
 
 const LoginForm = () => {
-  const [error, setError] = useState<string>()
+  // const [error, setError] = useState<string>()
   const [success, setSuccess] = useState<string>()  
-  
-  const router = useRouter()
+  const {login, error} = useLogin()
+  // const router = useRouter()
 
-  const { dispatch } = useCurrentUserContext()
+  // const { dispatch } = useCurrentUserContext()
 
   
   const apiEndpoint = 'http://localhost:8080/auth/login'
@@ -54,46 +49,8 @@ const LoginForm = () => {
  
   // 2. Define a submit handler.
   async function onSubmit(values: TloginSchema) {
-    // Reset runtime messages first.
-    setSuccess(undefined)
-    setError(undefined)
-
-    // Do something with the form values.
-    try {
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(values)
-      }
-      
-      const response = await fetch(apiEndpoint, requestOptions)
-
-      if (!response.ok) {
-        const error = await response.json()
-        console.log(error)
-        throw new Error(error.message)
-      }
-      
-      const responseData = await response.json()
-      console.log(responseData)
-
-      dispatch({type: "signIn", payload: { user: responseData }})
-
-      router.push("/dashboard")
-
-      // It will be recognize at runtime.
-      // console.log(window.electronAPI.getURL())
-    } 
-    catch (error: unknown) {
-      console.log(error)
-      const errorMessage = getErrorMessage(error)
-      // console.log("Err message: ", getErrorMessage)
-      setError(errorMessage)
-    }
-  }  
-
+    await login(values)
+  }
 
   return (
     <CardWrapper 
