@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import EditEmployeeForm from "./forms/edit-employee-form"
 import { Separator } from "@/components/ui/separator"
+import { useDeleteEmployee } from "@/components/hooks/useDeleteEmployee"
 
 
 
@@ -143,59 +144,17 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 5000));
 
 // See: https://ui.shadcn.com/docs/components/dialog
 const RowActions = ({ record }: { record: TEmployee }) => {
-  // Status for delete action.
-  const [deleteStatus, setDeleteStatus] = useState<"prompting" | "submitting" | "success">("prompting")
   // Status for edit form.
   const [editStatus, setEditStatus] = useState<"editing" | "submitting" | "success">("editing")
   const [error, setError] = useState<string>();
+  
+  const {deletingStatus, deleteEmployee} = useDeleteEmployee({record, onSetError: setError})
+
   // To close dialog after form submission has completed.
   // See: https://www.radix-ui.com/primitives/docs/components/alert-dialog#close-after-asynchronous-form-submission
   const [open, setOpen] = useState(false);
   const [render, setRender] = useState<"edit" | "delete" | null>(null)
   
-  const { user } = useCurrentUserContext()
-  const { dispatch } = useEmployeesContext()
-
-  // Event handlers
-  const handleDeleteEmployee = async () => {
-    // Reset runtime messages first.
-    setDeleteStatus("prompting")
-    setError(undefined)
-
-    const apiEndpoint = `http://localhost:8080/employees/${record.employeeId}`
-    try {
-      setDeleteStatus("submitting")
-
-      const response = await fetch(apiEndpoint, 
-        {
-          method: "DELETE",
-          headers: {
-            "Authorization": `Bearer ${user?.accessToken}`
-          }
-        }
-      )
-
-      if (!response.ok) {
-        const error = await response.json()
-        console.log(error)
-        throw new Error(error.message)
-      }
-      
-      const responseData = await response.json()
-      // console.log(responseData)
-      setDeleteStatus("success")
-
-      // Sync the local copy of employees.
-      dispatch({type: "deleted", payload: {employeeId: record.employeeId}})
-
-    } 
-    catch (error: unknown) {
-      console.log(error)
-      const errorMessage = getErrorMessage(error)
-      setError(errorMessage)
-      setDeleteStatus("prompting")
-    }     
-  }
 
 
   return (
@@ -250,12 +209,12 @@ const RowActions = ({ record }: { record: TEmployee }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               {/* Cancel button */}
-              <AlertDialogCancel disabled={status === "submitting"} onClick={() => setError(undefined)}>
+              <AlertDialogCancel disabled={deletingStatus === "submitting"} onClick={() => setError(undefined)}>
                 Cancel
               </AlertDialogCancel>
               {/* Proceed button */}
-              <Button variant={"destructive"} onClick={handleDeleteEmployee}>
-                {deleteStatus === "submitting" ? "Please wait" : "Proceed"}
+              <Button variant={"destructive"} onClick={deleteEmployee}>
+                {deletingStatus === "submitting" ? "Please wait" : "Proceed"}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

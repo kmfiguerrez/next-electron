@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { useRouter } from 'next/navigation'
 
-import { LOGIN_ENDPOINT } from "@/lib/api-endpoints"
+import { AUTH } from "@/lib/api-endpoints"
 
 import { getErrorMessage } from "@/lib/error-message"
 
@@ -35,7 +35,7 @@ export const useLogin = () => {
     }    
 
     try {
-      const response = await fetch(LOGIN_ENDPOINT, requestOptions)
+      const response = await fetch(AUTH.LOGIN_ENDPOINT, requestOptions)
 
       if (!response.ok) {
         const error = await response.json()

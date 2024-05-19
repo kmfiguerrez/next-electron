@@ -1,4 +1,4 @@
-import { REGISTER_ENDPOINT } from "@/lib/api-endpoints"
+import { AUTH } from "@/lib/api-endpoints"
 import { getErrorMessage } from "@/lib/error-message"
 import { useState } from "react"
 
@@ -27,7 +27,7 @@ export const useSignup = () => {
     }    
 
     try {
-      const response = await fetch(REGISTER_ENDPOINT, requestOptions)
+      const response = await fetch(AUTH.REGISTER_ENDPOINT, requestOptions)
 
       if (!response.ok) {
         const error = await response.json()
