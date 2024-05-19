@@ -105,9 +105,9 @@ const menuItems = [
         icon: <CircleUserRound height={20} width={20} />,
       },
       {
-        title: "Products",
-        path: "/dashboard/products",
-        icon: <ShoppingBag height={20} width={20} />,
+        title: "Users",
+        path: "/dashboard/users",
+        icon: <CircleUserRound height={20} width={20} />,
       },
       {
         title: "Transactions",

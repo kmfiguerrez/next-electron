@@ -12,8 +12,6 @@ import FormError from "@/components/auth/form-error"
 
 import CardWrapper from "@/components/auth/card-wrapper"
 
-import { getErrorMessage } from "@/lib/error-message"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -24,16 +22,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { useSignup } from "../hooks/useSignup"
 
 
 
 const RegisterForm = () => {
-  const [error, setError] = useState<string>()
-  const [success, setSuccess] = useState<string>()  
- 
+  const {success, error, signup} = useSignup()
   
-  const apiEndpoint = 'http://localhost:8080/auth/register'
-
 
   // 1. Define your form.
   const form = useForm<TregisterSchema>({
@@ -47,49 +42,14 @@ const RegisterForm = () => {
  
   // 2. Define a submit handler.
   async function onSubmit(values: TregisterSchema) {
-    // Reset runtime messages first.
-    setSuccess(undefined)
-    setError(undefined)
 
-    // Do something with the form values.
-    try {
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(values)
-      }
-      
-      const response = await fetch(apiEndpoint, requestOptions)
+    await signup(values)
+    form.reset()
 
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message)
-      }
-      
-      const responseData = await response.json()
-
-      console.log(responseData)
-      setSuccess("Account registered")
-      form.reset()
-    } 
-    catch (error: unknown) {
-      console.log(error)
-      const errorMessage = getErrorMessage(error)
-      // console.log("Err message: ", getErrorMessage)
-      if (errorMessage.includes("employee ID")) {
-        form.setError("employeeId", {message: getErrorMessage(error)})
-        return
-      }
-      
-      setError(getErrorMessage(error))
-    }
   }  
 
 
-
-
+  
   return (
     <CardWrapper 
       title="Register" 

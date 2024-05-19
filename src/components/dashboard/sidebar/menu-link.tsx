@@ -7,7 +7,11 @@ import { usePathname } from 'next/navigation'
 
 
 type TMenuLinkProps = {
-  item: {title: string, icon: React.ReactNode, path: string}
+  item: {
+    title: string, 
+    icon: React.ReactNode, 
+    path: string
+  }
 }
 
 
