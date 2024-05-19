@@ -1,11 +1,8 @@
 "use client"
 
-import { useState } from "react"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import FormSucess from "@/components/auth/form-success"
 import FormError from "@/components/auth/form-error"
 
 import CardWrapper from "@/components/auth/card-wrapper"
@@ -28,15 +25,7 @@ import {
 
 
 const LoginForm = () => {
-  // const [error, setError] = useState<string>()
-  const [success, setSuccess] = useState<string>()  
   const {login, error} = useLogin()
-  // const router = useRouter()
-
-  // const { dispatch } = useCurrentUserContext()
-
-  
-  const apiEndpoint = 'http://localhost:8080/auth/login'
 
   // 1. Define your form.
   const form = useForm<TloginSchema>({
@@ -62,7 +51,6 @@ const LoginForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
           {/* Runtime messages. */}
-          <FormSucess message={success} />
           <FormError message={error} />
           
           <FormField
@@ -99,16 +87,6 @@ const LoginForm = () => {
           >
             {form.formState.isSubmitting ? "loading" : "Login"}
           </Button>
-
-          {/* <Button
-            type="button"
-            onClick={async () => {
-              const cookie = await window.electronAPI.getCookie()
-              console.log(cookie)
-            }}
-          >
-            Get cookie
-          </Button> */}
 
         </form>
       </Form>
