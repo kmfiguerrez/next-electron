@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -7,16 +7,12 @@ import employeeSchema, {Active, type TEmployeeSchema } from '@/schemas/employee-
 
 import { Gender, TEmployee } from '../type'
 
-import { getErrorMessage } from '@/lib/error-message'
-
 import FormSucess from '@/components/auth/form-success'
 import FormError from '@/components/auth/form-error'
 
-import { useEmployeesContext } from '@/components/providers/employees-context'
-
 import { toDateOnlyForm } from '@/lib/date'
 
-import { useCurrentUserContext } from '@/components/providers/current-user/user-context'
+import { useEditEmployee } from '@/components/hooks/useEditEmployee'
 
 import { Input } from "@/components/ui/input"
 import {
@@ -45,16 +41,7 @@ type TEditEmployeeFormProps = {
 }
 
 const EditEmployeeForm: React.FC<TEditEmployeeFormProps> = ({ record, onEditStatus }) => {
-  const [error, setError] = useState<string>()
-  const [success, setSuccess] = useState<string>()
-  
-  const { user } = useCurrentUserContext()
-
-  const { dispatch } = useEmployeesContext()
-
-  const ds = new Date(record.hireDate).toLocaleDateString()
-  
-  console.log(toDateOnlyForm(ds))
+  const { success, error, editEmployee } = useEditEmployee({employeeId: record.employeeId, onEditStatus})
 
   // 1. Define your form.
   const form = useForm<TEmployeeSchema>({
@@ -75,68 +62,7 @@ const EditEmployeeForm: React.FC<TEditEmployeeFormProps> = ({ record, onEditStat
  
   // 2. Define a submit handler.
   async function onSubmit(values: TEmployeeSchema) {
-    // Reset runtime messages first.
-    setSuccess(undefined)
-    setError(undefined)
-    // Reset status.
-    onEditStatus("editing")
-
-    /*
-      The reason why active prop is enum in the employee schema is that
-      it is hard to work with boolean in forms.
-      But before sending the payload, we turn the active prop value to
-      boolean.
-      The date of birth and hire are date strings in the employee schema.    
-    */
-    console.log(values)
-
-    const apiEndpoint: string = `http://localhost:8080/employees/${record.employeeId}`
-    const payload = {
-      ...values, 
-      active: values.active === "yes" ? true : false
-    }
-    const requestOptions = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${user?.accessToken}` 
-      },
-      body: JSON.stringify(payload)
-    }
-
-    try {
-      onEditStatus("submitting")
-
-      const response = await fetch(apiEndpoint, requestOptions)
-
-      if (!response.ok) {
-        const error = await response.json()
-        console.log(error)
-        // console.log(error.error)
-        throw new Error(error.message)
-      }
-      
-      // const responseData = await response.json()
-      // console.log(responseData)
-      setSuccess("Employee updated")
-      onEditStatus("success")
-
-      // Sync the employees local copy.
-      dispatch({
-        type: "changed", 
-        payload: {
-          ...payload,
-          hireDate: new Date(payload.hireDate),
-          birthDate: new Date(payload.birthDate)
-        }
-      })
-    } 
-    catch (error: unknown) {
-      const errorMessage = getErrorMessage(error)
-      setError(errorMessage)
-      onEditStatus("editing")
-    }
-
+    await editEmployee(values)
   }
 
 

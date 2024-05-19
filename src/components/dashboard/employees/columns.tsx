@@ -135,11 +135,9 @@ export const columns: ColumnDef<TEmployee>[] = [
       return <RowActions record={record} />
     }
   }
-
 ]
 
 
-const wait = () => new Promise((resolve) => setTimeout(resolve, 5000));
 
 
 // See: https://ui.shadcn.com/docs/components/dialog
@@ -148,7 +146,7 @@ const RowActions = ({ record }: { record: TEmployee }) => {
   const [editStatus, setEditStatus] = useState<"editing" | "submitting" | "success">("editing")
   const [error, setError] = useState<string>();
   
-  const {deletingStatus, deleteEmployee} = useDeleteEmployee({record, onSetError: setError})
+  const {deletingStatus, deleteEmployee} = useDeleteEmployee({employeeId: record.employeeId, onSetError: setError})
 
   // To close dialog after form submission has completed.
   // See: https://www.radix-ui.com/primitives/docs/components/alert-dialog#close-after-asynchronous-form-submission

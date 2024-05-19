@@ -5,19 +5,17 @@ import { useEmployeesContext } from "../providers/employees-context"
 
 import { getErrorMessage } from "@/lib/error-message"
 
-import type { TEmployee } from "../dashboard/employees/type"
-
-import { EMPLOYEES } from "@/lib/api-endpoints"
+import { EMPLOYEES_ENDPOINT } from "@/lib/api-endpoints"
 
 
 type TuseDeleteEmployeeProp = {
   onSetError: Dispatch<SetStateAction<string | undefined>>
-  record: TEmployee
+  employeeId: string
 }
 
 export const useDeleteEmployee = (config: TuseDeleteEmployeeProp) => {
   const [deletingStatus, setDeleteStatus] = useState<"prompting" | "submitting">("prompting")
-  const { record, onSetError } = config
+  const { employeeId, onSetError } = config
 
   const { user } = useCurrentUserContext()
   const { dispatch } = useEmployeesContext()
@@ -38,7 +36,7 @@ export const useDeleteEmployee = (config: TuseDeleteEmployeeProp) => {
         }      
       }      
 
-      const response = await fetch(`${EMPLOYEES.DELETE_ENDPOINT}/${record.employeeId}`, requestOptions)
+      const response = await fetch(`${EMPLOYEES_ENDPOINT}/${employeeId}`, requestOptions)
 
       if (!response.ok) {
         const error = await response.json()
@@ -50,7 +48,7 @@ export const useDeleteEmployee = (config: TuseDeleteEmployeeProp) => {
       // console.log(responseData)
 
       // Sync the local copy of employees.
-      dispatch({type: "deleted", payload: {employeeId: record.employeeId}})
+      dispatch({type: "deleted", payload: {employeeId}})
 
     } 
     catch (error: unknown) {

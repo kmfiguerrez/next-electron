@@ -5,7 +5,7 @@ import { useCurrentUserContext } from "../providers/current-user/user-context"
 
 import { getErrorMessage } from "@/lib/error-message"
 
-import { EMPLOYEES } from "@/lib/api-endpoints"
+import { EMPLOYEES_ENDPOINT } from "@/lib/api-endpoints"
 
 
 
@@ -20,7 +20,7 @@ export const useGetEmployees = () => {
     const getEmployees = async () => {
       
       try {
-        const response = await fetch(EMPLOYEES.GET_ALL_ENDPOINT, {
+        const response = await fetch(EMPLOYEES_ENDPOINT, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${user?.accessToken}` 
